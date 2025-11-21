@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/java-17+-orange.svg)](https://openjdk.java.net/)
 [![Spigot Version](https://img.shields.io/badge/spigot-1.16.5+-green.svg)](https://www.spigotmc.org/)
+[![Folia Version](https://img.shields.io/badge/folia-1.20.1+-green.svg)](https://papermc.io/software/folia/)
 
 一个强大的Minecraft Bukkit/Spigot/Folia插件，允许玩家自定义加入消息，支持多种消息模式、权限系统和颜色代码。
 
@@ -193,4 +194,4 @@ database:
 
 ## 作者
 
-MC506LW t/Spigot社区提供的优秀API和文档，以及PlaceholderAPI开发者提供的强大工具。
+MC506LW
