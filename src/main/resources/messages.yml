@@ -1,0 +1,132 @@
+# CustomJoinMessage Messages Configuration File | CustomJoinMessage 消息配置文件
+# Using Catppuccin Mocha color palette | 使用Catppuccin Mocha调色板
+
+# Messages sent to players | 发送给玩家的消息
+messages:
+  # Message when a player successfully sets their join message | 玩家成功设置加入消息时的消息
+  join-message-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入消息已成功设置！"
+
+  # Message when a player successfully sets their join prefix | 玩家成功设置加入前缀时的消息
+  join-prefix-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入前缀已成功设置！"
+
+  # Message when a player successfully sets their join suffix | 玩家成功设置加入后缀时的消息
+  join-suffix-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入后缀已成功设置！"
+
+  # Message when a player clears their join message | 玩家清除加入消息时的消息
+  join-message-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入消息已清除，将使用服务器默认消息。"
+
+  # Message when a player clears their join prefix | 玩家清除加入前缀时的消息
+  join-prefix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入前缀已清除，将使用服务器默认前缀。"
+
+  # Message when a player clears their join suffix | 玩家清除加入后缀时的消息
+  join-suffix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入后缀已清除，将使用服务器默认后缀。"
+
+  # Message when an admin successfully reloads the config | 管理员成功重载配置时的消息
+  config-reloaded: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa配置文件已重载！"
+
+  # Message when an admin successfully changes message mode | 管理员成功更改消息模式时的消息
+  mode-changed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa消息模式已更改为: &#f9e2af%mode%"
+
+  # Message when an admin sets another player's join message | 管理员设置其他玩家加入消息时的消息
+  player-message-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功为 &#f9e2af%player% &#89b4fa设置了加入消息。"
+
+  # Message when an admin sets another player's join prefix | 管理员设置其他玩家加入前缀时的消息
+  player-prefix-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功为 &#f9e2af%player% &#89b4fa设置了加入前缀。"
+
+  # Message when an admin sets another player's join suffix | 管理员设置其他玩家加入后缀时的消息
+  player-suffix-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功为 &#f9e2af%player% &#89b4fa设置了加入后缀。"
+
+  # Message when an admin clears another player's join message | 管理员清除其他玩家加入消息时的消息
+  player-message-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功清除了 &#f9e2af%player% &#89b4fa的加入消息。"
+
+  # Message when an admin clears another player's join prefix | 管理员清除其他玩家加入前缀时的消息
+  player-prefix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功清除了 &#f9e2af%player% &#89b4fa的加入前缀。"
+
+  # Message when an admin clears another player's join suffix | 管理员清除其他玩家加入后缀时的消息
+  player-suffix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功清除了 &#f9e2af%player% &#89b4fa的加入后缀。"
+
+  # Message shown when a player views their current join message | 玩家查看当前加入消息时显示的消息
+  current-message: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前的加入消息: &#cdd6f4%message%"
+
+  # Message shown when a player views their permission level | 玩家查看权限级别时显示的消息
+  permission-level: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的权限级别: &#cdd6f4%level%"
+
+  # Message when checking a player's permission level | 检查玩家权限级别时的消息
+  permission-check-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm permission check <玩家> &#f38ba8检查玩家权限。"
+  permission-check-result: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa玩家 &#cdd6f4%player% &#89b4fa的权限信息:"
+  permission-level-info: "&#89b4fa权限级别: &#cdd6f4%level%"
+  permission-color-info: "&#89b4fa可以使用颜色代码: &#cdd6f4%status%"
+  permission-nocolor-info: "&#89b4fa可以使用无颜色代码: &#cdd6f4%status%"
+  permission-basic-info: "&#89b4fa可以使用基本功能: &#cdd6f4%status%"
+  permission-admin-info: "&#89b4fa管理员权限: &#cdd6f4%status%"
+
+  # Help messages | 帮助消息
+  help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 帮助 ==="
+  help-current-permission: "&#89b4fa当前权限级别: &#cdd6f4%level%"
+  help-mode-info: "&#89b4fa/setjoin §7- 查看当前模式"
+  help-prefix-usage: "&#89b4fa/setjoin prefix <前缀> §7- 设置加入消息前缀"
+  help-suffix-usage: "&#89b4fa/setjoin suffix <后缀> §7- 设置加入消息后缀"
+  help-prefix-suffix-note: "&#89b4fa注意: 前缀和后缀有长度限制（不包含颜色代码）"
+  help-message-usage: "&#89b4fa/setjoin <消息> §7- 设置你的加入消息"
+  help-view-message: "&#89b4fa/setjoin §7- 查看你当前的加入消息"
+  help-reset-message: "&#89b4fa/setjoin reset §7- 清除你的加入消息"
+  help-message-note: "&#89b4fa注意: 消息有长度限制（不包含颜色代码）"
+  help-color-permission: "&#a6e3a1你有权限在消息中使用颜色代码 (&a, &b, &#RRGGBB等)"
+  help-no-color-permission: "&#f38ba8你只能在消息中使用纯文本，不能使用颜色代码"
+  help-admin-set-message: "&#89b4fa/setjoin <玩家> <消息> §7- 为其他玩家设置加入消息"
+  help-admin-reset-message: "&#89b4fa/setjoin <玩家> reset §7- 清除其他玩家的加入消息"
+  help-admin-reload: "&#89b4fa/cjm reload §7- 重载配置文件"
+  
+  # Admin help messages | 管理员帮助消息
+  admin-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 管理命令帮助 ==="
+  admin-help-reload: "&#89b4fa/cjm reload §7- 重载配置文件"
+  admin-help-permission: "&#89b4fa/cjm permission check <玩家> §7- 检查玩家的权限级别"
+  admin-help-help: "&#89b4fa/cjm help §7- 显示此帮助信息"
+  admin-help-config-note: "&#89b4fa注意: 消息模式请在config.yml中配置"
+  
+  # Permission help messages | 权限帮助消息
+  permission-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 权限命令帮助 ==="
+  permission-help-check: "&#89b4fa/cjm permission check <玩家> §7- 检查玩家的权限级别"
+  permission-help-help: "&#89b4fa/cjm permission help §7- 显示此帮助信息"
+  permission-levels-header: "&#89b4fa权限级别说明:"
+  permission-level-admin: "&#f38ba8管理员 §7- 拥有所有权限，包括管理其他玩家的消息"
+  permission-level-color: "&#89b4fa颜色用户 §7- 可以使用颜色代码自定义加入消息"
+  permission-level-basic: "&#a6e3a1普通用户 §7- 只能使用纯文本自定义加入消息"
+  permission-level-none: "&#f38ba8无权限 §7- 无法自定义加入消息"
+
+  # Message shown when a player views the current message mode | 玩家查看当前消息模式时显示的消息
+  current-mode: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa当前消息模式: &#cdd6f4%mode%"
+
+  # Message shown when a player views their current join prefix | 玩家查看当前加入前缀时显示的消息
+  current-prefix: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前的加入前缀: &#cdd6f4%prefix%"
+
+  # Message shown when a player views their current join suffix | 玩家查看当前加入后缀时显示的消息
+  current-suffix: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前的加入后缀: &#cdd6f4%suffix%"
+
+  # Message shown when a player doesn't have a custom message | 玩家没有自定义消息时显示的消息
+  no-custom-message: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前使用的是服务器默认消息。"
+
+  # Message shown when a player doesn't have a custom prefix | 玩家没有自定义前缀时显示的消息
+  no-custom-prefix: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前使用的是服务器默认前缀。"
+
+  # Message shown when a player doesn't have a custom suffix | 玩家没有自定义后缀时显示的消息
+  no-custom-suffix: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前使用的是服务器默认后缀。"
+
+  # Error messages | 错误消息
+  no-permission: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8你没有权限执行此命令。"
+  no-color-permission: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8你没有权限在消息中使用颜色代码。"
+  player-not-found: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8找不到玩家: &#f2cdcd%player%"
+  invalid-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/setjoin help &#f38ba8查看帮助。"
+  invalid-usage-cjm: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm help &#f38ba8查看帮助。"
+  console-not-allowed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8此命令只能由玩家执行。"
+  invalid-mode: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8无效的消息模式。可用模式: &#f2cdcdfull, prefix_suffix"
+  prefix-suffix-disabled: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8前后缀模式未启用。当前模式: &#f2cdcd%mode%"
+  not-prefix-suffix-mode: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8此命令仅在前缀-后缀模式下可用。当前模式: &#f2cdcd%mode%"
+  prefix-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/setjoin prefix <前缀> &#f38ba8设置前缀。"
+  suffix-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/setjoin suffix <后缀> &#f38ba8设置后缀。"
+  prefix-too-long: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8前缀过长。最大长度限制为 &#f2cdcd%limit% &#f38ba8个字符（不包含颜色代码）。"
+  suffix-too-long: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8后缀过长。最大长度限制为 &#f2cdcd%limit% &#f38ba8个字符（不包含颜色代码）。"
+  message-too-long: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8消息过长。最大长度限制为 &#f2cdcd%limit% &#f38ba8个字符（不包含颜色代码）。"
+  
+  # Other messages | 其他消息
+  unknown-command: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8未知命令。使用 &#6c7086/cjm help &#f38ba8查看帮助。"

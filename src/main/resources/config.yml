@@ -1,0 +1,60 @@
+# CustomJoinMessage Configuration File | CustomJoinMessage 配置文件
+
+# Message mode setting | 消息模式设置
+# Options: full, prefix_suffix | 选项: full(完整模式), prefix_suffix(前后缀模式)
+# full: Use complete message replacement | full: 使用完整消息替换
+# prefix_suffix: Use prefix and suffix separately | prefix_suffix: 分别使用前缀和后缀
+message-mode: full
+
+# Default join message for players who haven't set a custom message | 未设置自定义消息的玩家的默认加入消息
+# You can use PlaceholderAPI placeholders here | 你可以在这里使用PlaceholderAPI占位符
+# Use %player_name% for the player's name | 使用 %player_name% 表示玩家名称
+default-join-message: "&e%player_name% 加入了服务器"
+
+# Default join prefix for prefix_suffix mode | 前后缀模式下的默认加入前缀
+# Used when message-mode is prefix_suffix | 当message-mode为prefix_suffix时使用
+default-join-prefix: "&e欢迎 "
+
+# Default join suffix for prefix_suffix mode | 前后缀模式下的默认加入后缀
+# Used when message-mode is prefix_suffix | 当message-mode为prefix_suffix时使用
+default-join-suffix: " 加入服务器！"
+
+# Message length limits | 消息长度限制
+# These limits only count non-color code characters | 这些限制只计算非颜色代码字符
+# Set to -1 to disable the limit | 设置为-1以禁用限制
+length-limits:
+  # Maximum length for full mode messages | 完整模式消息的最大长度
+  full-mode: 50
+  
+  # Maximum length for prefix in prefix_suffix mode | 前后缀模式下前缀的最大长度
+  prefix: 20
+  
+  # Maximum length for suffix in prefix_suffix mode | 前后缀模式下后缀的最大长度
+  suffix: 20
+
+# Whether to hide the default join message | 是否隐藏默认加入消息
+hide-default-join-message: true
+
+# PlaceholderAPI settings | PlaceholderAPI设置
+placeholders:
+  # Whether to enable PlaceholderAPI support | 是否启用PlaceholderAPI支持
+  # If disabled, only %player_name% placeholder will be processed | 如果禁用，将只处理%player_name%占位符
+  enabled: true
+
+# Database settings | 数据库设置
+database:
+  # Type of database: sqlite, mysql | 数据库类型: sqlite, mysql
+  type: sqlite
+  
+  # SQLite settings (only used if type is sqlite) | SQLite设置(仅在type为sqlite时使用)
+  sqlite:
+    file: joinmessages.db
+    
+  # MySQL settings (only used if type is mysql) | MySQL设置(仅在type为mysql时使用)
+  mysql:
+    host: localhost
+    port: 3306
+    database: minecraft
+    username: root
+    password: password
+    table: joinmessages

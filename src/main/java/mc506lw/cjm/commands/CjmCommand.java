@@ -1,0 +1,98 @@
+package mc506lw.cjm.commands;
+
+import mc506lw.cjm.CustomJoinMessage;
+import mc506lw.cjm.utils.MessageManager;
+import mc506lw.cjm.utils.PermissionUtils;
+import mc506lw.cjm.utils.SchedulerUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CjmCommand implements CommandExecutor, TabCompleter {
+    private final CustomJoinMessage plugin;
+    private final MessageManager messageManager;
+    private final PermissionCommand permissionCommand;
+
+    public CjmCommand(CustomJoinMessage plugin) {
+        this.plugin = plugin;
+        this.messageManager = plugin.getMessageManager();
+        this.permissionCommand = new PermissionCommand(plugin);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!PermissionUtils.isAdmin(sender)) {
+            messageManager.sendMessage(sender, "no-permission");
+            return true;
+        }
+
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+            sendHelp(sender);
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            plugin.reloadConfig();
+            plugin.getConfigManager().reloadConfig();
+            messageManager.sendMessage(sender, "config-reloaded");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("permission")) {
+            // Forward permission subcommand to PermissionCommand
+            String[] permissionArgs = new String[args.length - 1];
+            System.arraycopy(args, 1, permissionArgs, 0, args.length - 1);
+            return permissionCommand.onCommand(sender, command, "permission", permissionArgs);
+        }
+
+        // Unknown command
+        messageManager.sendMessage(sender, "unknown-command");
+        return true;
+    }
+
+    private void sendHelp(CommandSender sender) {
+        // Send help header
+        messageManager.sendMessage(sender, "admin-help-header");
+        
+        // Send help commands
+        messageManager.sendMessage(sender, "admin-help-reload");
+        messageManager.sendMessage(sender, "admin-help-permission");
+        messageManager.sendMessage(sender, "admin-help-help");
+        
+        // Send config note
+        messageManager.sendMessage(sender, "admin-help-config-note");
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            completions.add("reload");
+            completions.add("permission");
+            completions.add("help");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("permission")) {
+            // Forward tab completion to PermissionCommand
+            String[] permissionArgs = new String[args.length - 1];
+            System.arraycopy(args, 1, permissionArgs, 0, args.length - 1);
+            return permissionCommand.onTabComplete(sender, command, "permission", permissionArgs);
+        }
+
+        // Filter completions based on what the user has typed
+        List<String> filtered = new ArrayList<>();
+        String current = args[args.length - 1].toLowerCase();
+
+        for (String completion : completions) {
+            if (completion.toLowerCase().startsWith(current)) {
+                filtered.add(completion);
+            }
+        }
+
+        return filtered;
+    }
+}

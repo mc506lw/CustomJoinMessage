@@ -1,0 +1,30 @@
+name: CustomJoinMessage
+version: '${version}'
+main: mc506lw.cjm.CustomJoinMessage
+api-version: '1.16'
+author: mc506lw
+description: A plugin that allows players to set custom join messages | 允许玩家设置自定义加入消息的插件
+softdepend: ["PlaceholderAPI"]
+folia-supported: true
+commands:
+  setjoin:
+    description: Set your custom join message | 设置你的自定义加入消息
+    usage: /setjoin [player] [message|prefix|suffix|reset]
+    permission: customjoinmessage.use
+  cjm:
+    description: CustomJoinMessage management commands | CustomJoinMessage管理命令
+    usage: /cjm [reload|mode|help|permission]
+    permission: customjoinmessage.admin
+permissions:
+  customjoinmessage.use:
+    description: Allows player to set their own join message | 允许玩家设置自己的加入消息
+    default: true
+  customjoinmessage.use.color:
+    description: Allows players to use colors in their join message
+    default: op
+  customjoinmessage.use.nocolor:
+    description: Allows players to set join message without colors
+    default: true
+  customjoinmessage.admin:
+    description: Allows player to manage other players' join messages and reload config | 允许玩家管理其他玩家的加入消息和重载配置
+    default: op

@@ -1,0 +1,74 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build with Gradle
+      run: ./gradlew build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: CustomJoinMessage
+        path: build/libs/CustomJoinMessage-*.jar
+        
+    - name: Get version
+      id: version
+      run: echo "VERSION=$(./gradlew properties -q | grep '^version:' | awk '{print $2}')" >> $GITHUB_OUTPUT
+      
+    - name: Create Release
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      uses: softprops/action-gh-release@v1
+      with:
+        name: CustomJoinMessage v${{ steps.version.outputs.VERSION }}
+        body: |
+          ## 更新内容
+          - 自动构建版本 v${{ steps.version.outputs.VERSION }}
+          - 基于最新代码构建
+          
+          ## 下载
+          - 下载下方的 `CustomJoinMessage-${{ steps.version.outputs.VERSION }}.jar` 文件
+          - 将其放入服务器的 `plugins` 目录
+          - 重启服务器或使用 `/reload` 命令加载插件
+          
+          ## 注意事项
+          - 请确保您的服务器运行兼容的 Minecraft 版本
+          - 如需使用 PlaceholderAPI 功能，请先安装 PlaceholderAPI 插件
+        files: |
+          build/libs/CustomJoinMessage-*.jar
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
