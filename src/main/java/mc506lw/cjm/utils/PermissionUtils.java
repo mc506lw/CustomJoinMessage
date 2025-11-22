@@ -1,12 +1,41 @@
 package mc506lw.cjm.utils;
 
+import mc506lw.cjm.CustomJoinMessage;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 权限工具类，用于检查玩家是否有特定权限
  */
 public class PermissionUtils {
+    
+    /**
+     * 获取预设权限组的优先级
+     * @param permissionName 权限名称
+     * @return 优先级，如果未找到则返回0
+     */
+    public static int getPredefinedPermissionPriority(String permissionName) {
+        CustomJoinMessage plugin = CustomJoinMessage.getInstance();
+        ConfigurationSection predefinedSection = plugin.getConfigManager().getConfig()
+                .getConfigurationSection("predefined-permissions");
+        
+        if (predefinedSection == null) {
+            return 0;
+        }
+        
+        for (String key : predefinedSection.getKeys(false)) {
+            String permission = predefinedSection.getString(key + ".permission");
+            if (permission != null && permission.equals(permissionName)) {
+                return predefinedSection.getInt(key + ".priority", 0);
+            }
+        }
+        
+        return 0;
+    }
     
     /**
      * 检查玩家是否可以使用颜色
@@ -42,6 +71,90 @@ public class PermissionUtils {
      */
     public static boolean isAdmin(CommandSender sender) {
         return sender.hasPermission("customjoinmessage.admin");
+    }
+    
+    /**
+     * 获取玩家的最高优先级权限组（包括自定义权限组和预设权限组）
+     * @param player 玩家
+     * @return 权限组名称，如果没有权限组则返回null
+     */
+    public static String getHighestPriorityPermissionGroup(Player player) {
+        CustomJoinMessage plugin = CustomJoinMessage.getInstance();
+        ConfigurationSection groupsSection = plugin.getConfigManager().getConfig()
+                .getConfigurationSection("permission-groups");
+        
+        String highestGroup = null;
+        int highestPriority = -1;
+        
+        // 检查所有自定义权限组
+        if (groupsSection != null) {
+            for (String groupName : groupsSection.getKeys(false)) {
+                String permission = "customjoinmessage.use." + groupName;
+                
+                if (player.hasPermission(permission)) {
+                    int priority = groupsSection.getInt(groupName + ".priority", 0);
+                    
+                    if (priority > highestPriority) {
+                        highestPriority = priority;
+                        highestGroup = groupName;
+                    }
+                }
+            }
+        }
+        
+        // 检查预设权限组
+        ConfigurationSection predefinedSection = plugin.getConfigManager().getConfig()
+                .getConfigurationSection("predefined-permissions");
+        
+        if (predefinedSection != null) {
+            for (String key : predefinedSection.getKeys(false)) {
+                String permission = predefinedSection.getString(key + ".permission");
+                
+                if (permission != null && player.hasPermission(permission)) {
+                    int priority = predefinedSection.getInt(key + ".priority", 0);
+                    
+                    if (priority > highestPriority) {
+                        highestPriority = priority;
+                        highestGroup = key;
+                    }
+                }
+            }
+        }
+        
+        return highestGroup;
+    }
+    
+    /**
+     * 获取权限组的加入消息（完整模式）
+     * @param groupName 权限组名称
+     * @return 加入消息，如果组不存在则返回null
+     */
+    public static String getGroupJoinMessage(String groupName) {
+        CustomJoinMessage plugin = CustomJoinMessage.getInstance();
+        return plugin.getConfigManager().getConfig()
+                .getString("permission-groups." + groupName + ".join-message");
+    }
+    
+    /**
+     * 获取权限组的加入前缀（前后缀模式）
+     * @param groupName 权限组名称
+     * @return 加入前缀，如果组不存在则返回null
+     */
+    public static String getGroupJoinPrefix(String groupName) {
+        CustomJoinMessage plugin = CustomJoinMessage.getInstance();
+        return plugin.getConfigManager().getConfig()
+                .getString("permission-groups." + groupName + ".join-prefix");
+    }
+    
+    /**
+     * 获取权限组的加入后缀（前后缀模式）
+     * @param groupName 权限组名称
+     * @return 加入后缀，如果组不存在则返回null
+     */
+    public static String getGroupJoinSuffix(String groupName) {
+        CustomJoinMessage plugin = CustomJoinMessage.getInstance();
+        return plugin.getConfigManager().getConfig()
+                .getString("permission-groups." + groupName + ".join-suffix");
     }
     
     /**
@@ -89,6 +202,16 @@ public class PermissionUtils {
      * @return 权限级别描述
      */
     public static String getPermissionLevel(CommandSender sender) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            String customGroup = getHighestPriorityPermissionGroup(player);
+            
+            if (customGroup != null) {
+                // 返回最高优先级权限组名称
+                return customGroup;
+            }
+        }
+        
         if (isAdmin(sender)) {
             return "管理员";
         } else if (canUseColors(sender)) {

@@ -1,4 +1,7 @@
 # CustomJoinMessage Configuration File | CustomJoinMessage 配置文件
+# Configuration version | 配置文件版本
+# DO NOT CHANGE THIS VALUE | 请勿更改此值
+config-version: 1.1.0
 
 # Message mode setting | 消息模式设置
 # Options: full, prefix_suffix | 选项: full(完整模式), prefix_suffix(前后缀模式)
@@ -58,3 +61,43 @@ database:
     username: root
     password: password
     table: joinmessages
+
+# Custom permission groups | 自定义权限组
+# You can define custom permission groups here | 你可以在这里定义自定义权限组
+# Each group has a priority (higher number = higher priority) | 每个组都有一个优先级（数字越大优先级越高）
+# When a player has multiple permissions, the group with the highest priority will be used | 当玩家有多个权限时，将使用优先级最高的组
+permission-groups:
+  # Example groups | 示例组
+  vip:
+    # Priority of this group | 这个组的优先级
+    priority: 10
+    # Join message for this group (full mode) | 这个组的加入消息（完整模式）
+    join-message: "&6[&eVIP&6] &e%player_name% 加入了服务器"
+    # Join prefix for this group (prefix_suffix mode) | 这个组的加入前缀（前后缀模式）
+    join-prefix: "&6[&eVIP&6] &e欢迎 "
+    # Join suffix for this group (prefix_suffix mode) | 这个组的加入后缀（前后缀模式）
+    join-suffix: " 加入服务器！"
+  
+  premium:
+    # Priority of this group | 这个组的优先级
+    priority: 20
+    # Join message for this group (full mode) | 这个组的加入消息（完整模式）
+    join-message: "&b[&3PREMIUM&b] &3%player_name% 加入了服务器"
+    # Join prefix for this group (prefix_suffix mode) | 这个组的加入前缀（前后缀模式）
+    join-prefix: "&b[&3PREMIUM&b] &3欢迎 "
+    # Join suffix for this group (prefix_suffix mode) | 这个组的加入后缀（前后缀模式）
+    join-suffix: " 加入服务器！"
+  
+  # You can add more groups below | 你可以在下面添加更多组
+
+# Predefined permission groups priority configuration | 预定义权限组优先级配置
+predefined-permissions:
+  admin:
+    priority: 100
+    permission: "customjoinmessage.admin"
+  color:
+    priority: 50
+    permission: "customjoinmessage.use.color"
+  nocolor:
+    priority: 10
+    permission: "customjoinmessage.use.nocolor"

@@ -2,6 +2,7 @@ package mc506lw.cjm.listeners;
 
 import mc506lw.cjm.CustomJoinMessage;
 import mc506lw.cjm.utils.MessageManager;
+import mc506lw.cjm.utils.PermissionUtils;
 import mc506lw.cjm.utils.PlaceholderUtil;
 import mc506lw.cjm.utils.SchedulerUtils;
 import org.bukkit.entity.Player;
@@ -38,12 +39,28 @@ public class PlayerJoinListener implements Listener {
         futureMessage.thenAccept(customMessage -> {
             String message;
             
+            // Check if player has a custom permission group
+            String permissionGroup = PermissionUtils.getHighestPriorityPermissionGroup(player);
+            
             if (plugin.getConfigManager().isPrefixSuffixMode()) {
                 // Prefix-suffix mode
                 if (customMessage != null && !customMessage.isEmpty()) {
                     // Use custom prefix and suffix from database
                     // Process all color codes including RGB formats
                     message = messageManager.processColors(customMessage);
+                } else if (permissionGroup != null) {
+                    // Use permission group prefix and suffix
+                    String prefix = PermissionUtils.getGroupJoinPrefix(permissionGroup);
+                    String suffix = PermissionUtils.getGroupJoinSuffix(permissionGroup);
+                    
+                    // Format prefix and suffix with placeholders
+                    prefix = messageManager.formatMessage(prefix, playerName);
+                    suffix = messageManager.formatMessage(suffix, playerName);
+                    
+                    // Build the complete message with color reset before player name
+                    message = prefix + "&r" + playerName + suffix;
+                    // Process all color codes including RGB formats
+                    message = messageManager.processColors(message);
                 } else {
                     // Use default prefix and suffix
                     String prefix = plugin.getConfigManager().getDefaultJoinPrefix();
@@ -63,6 +80,10 @@ public class PlayerJoinListener implements Listener {
                 if (customMessage != null) {
                     // Use custom message
                     message = messageManager.formatMessage(customMessage, playerName);
+                } else if (permissionGroup != null) {
+                    // Use permission group message
+                    message = PermissionUtils.getGroupJoinMessage(permissionGroup);
+                    message = messageManager.formatMessage(message, playerName);
                 } else {
                     // Use default message
                     message = plugin.getConfigManager().getDefaultJoinMessage();

@@ -24,6 +24,14 @@ messages:
   # Message when an admin successfully reloads the config | 管理员成功重载配置时的消息
   config-reloaded: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa配置文件已重载！"
 
+  # Message when config version is outdated and updated | 配置版本过旧并已更新时的消息
+  config-updated: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af检测到配置文件版本过旧，已自动更新到最新版本！"
+  config-backup-created: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#a6e3a1原配置文件已备份为: &#cdd6f4%backup_file%"
+
+  # Message when messages file is outdated and updated | 消息文件过旧并已更新时的消息
+  messages-updated: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af检测到消息文件缺少必要内容，已自动更新到最新版本！"
+  messages-backup-created: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#a6e3a1原消息文件已备份为: &#cdd6f4%backup_file%"
+
   # Message when an admin successfully changes message mode | 管理员成功更改消息模式时的消息
   mode-changed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa消息模式已更改为: &#f9e2af%mode%"
 
@@ -81,8 +89,36 @@ messages:
   admin-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 管理命令帮助 ==="
   admin-help-reload: "&#89b4fa/cjm reload §7- 重载配置文件"
   admin-help-permission: "&#89b4fa/cjm permission check <玩家> §7- 检查玩家的权限级别"
+  admin-help-group: "&#89b4fa/cjm group list §7- 列出所有自定义权限组"
   admin-help-help: "&#89b4fa/cjm help §7- 显示此帮助信息"
   admin-help-config-note: "&#89b4fa注意: 消息模式请在config.yml中配置"
+  
+  # Group command messages | 权限组命令消息
+  group-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 权限组命令帮助 ==="
+  group-help-list: "&#89b4fa/cjm group list §7- 列出所有自定义权限组"
+  group-help-info: "&#89b4fa/cjm group info <组名> §7- 查看特定权限组的详细信息"
+  group-help-help: "&#89b4fa/cjm group help §7- 显示此帮助信息"
+  
+  no-groups-defined: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8当前没有定义任何自定义权限组。"
+  
+  groups-list-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 自定义权限组列表 ==="
+  groups-list-item: "&#89b4fa组名: &#cdd6f4%group% &#7f8498| 优先级: &#cdd6f4%priority% &#7f8498| 权限: &#cdd6f4%permission%"
+  
+  predefined-groups-list-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 预设权限组列表 ==="
+  predefined-groups-list-item: "&#89b4fa组名: &#cdd6f4%group% &#7f8498| 优先级: &#cdd6f4%priority% &#7f8498| 权限: &#cdd6f4%permission%"
+  
+  group-info-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 权限组信息: %group% ==="
+  group-info-permission: "&#89b4fa权限节点: &#cdd6f4%permission%"
+  group-info-priority: "&#89b4fa优先级: &#cdd6f4%priority%"
+  group-info-join-message: "&#89b4fa加入消息: &#cdd6f4%message%"
+  group-info-join-prefix: "&#89b4fa加入前缀: &#cdd6f4%prefix%"
+  group-info-join-suffix: "&#89b4fa加入后缀: &#cdd6f4%suffix%"
+  
+  predefined-group-info-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 预设权限组信息: %group% ==="
+  predefined-group-note: "&#89b4fa注意: 预设权限组不支持自定义加入消息配置"
+  
+  group-not-found: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8找不到权限组: &#f2cdcd%group%"
+  group-info-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm group info <组名> &#f38ba8查看权限组信息。"
   
   # Permission help messages | 权限帮助消息
   permission-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 权限命令帮助 ==="

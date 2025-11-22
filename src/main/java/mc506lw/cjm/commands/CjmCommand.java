@@ -17,11 +17,13 @@ public class CjmCommand implements CommandExecutor, TabCompleter {
     private final CustomJoinMessage plugin;
     private final MessageManager messageManager;
     private final PermissionCommand permissionCommand;
+    private final GroupCommand groupCommand;
 
     public CjmCommand(CustomJoinMessage plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
         this.permissionCommand = new PermissionCommand(plugin);
+        this.groupCommand = new GroupCommand(plugin);
     }
 
     @Override
@@ -37,9 +39,34 @@ public class CjmCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
-            plugin.reloadConfig();
-            plugin.getConfigManager().reloadConfig();
-            messageManager.sendMessage(sender, "config-reloaded");
+            // Reload configuration and check if it was updated
+            boolean configUpdated = plugin.getConfigManager().reloadConfig();
+            
+            // Check if config was updated
+            boolean configFileUpdated = plugin.getConfigManager().getLastBackupFile() != null;
+            boolean messagesFileUpdated = plugin.getConfigManager().getLastMessagesBackupFile() != null;
+            
+            // Send appropriate messages based on what was updated
+            if (configFileUpdated) {
+                messageManager.sendMessage(sender, "config-updated");
+                String backupFile = plugin.getConfigManager().getLastBackupFile();
+                if (backupFile != null) {
+                    messageManager.sendMessage(sender, "config-backup-created", "%backup_file%", backupFile);
+                }
+            }
+            
+            if (messagesFileUpdated) {
+                messageManager.sendMessage(sender, "messages-updated");
+                String backupFile = plugin.getConfigManager().getLastMessagesBackupFile();
+                if (backupFile != null) {
+                    messageManager.sendMessage(sender, "messages-backup-created", "%backup_file%", backupFile);
+                }
+            }
+            
+            if (!configFileUpdated && !messagesFileUpdated) {
+                messageManager.sendMessage(sender, "config-reloaded");
+            }
+            
             return true;
         }
 
@@ -48,6 +75,13 @@ public class CjmCommand implements CommandExecutor, TabCompleter {
             String[] permissionArgs = new String[args.length - 1];
             System.arraycopy(args, 1, permissionArgs, 0, args.length - 1);
             return permissionCommand.onCommand(sender, command, "permission", permissionArgs);
+        }
+
+        if (args[0].equalsIgnoreCase("group")) {
+            // Forward group subcommand to GroupCommand
+            String[] groupArgs = new String[args.length - 1];
+            System.arraycopy(args, 1, groupArgs, 0, args.length - 1);
+            return groupCommand.onCommand(sender, command, "group", groupArgs);
         }
 
         // Unknown command
@@ -62,6 +96,7 @@ public class CjmCommand implements CommandExecutor, TabCompleter {
         // Send help commands
         messageManager.sendMessage(sender, "admin-help-reload");
         messageManager.sendMessage(sender, "admin-help-permission");
+        messageManager.sendMessage(sender, "admin-help-group");
         messageManager.sendMessage(sender, "admin-help-help");
         
         // Send config note
@@ -75,12 +110,18 @@ public class CjmCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             completions.add("reload");
             completions.add("permission");
+            completions.add("group");
             completions.add("help");
         } else if (args.length == 2 && args[0].equalsIgnoreCase("permission")) {
             // Forward tab completion to PermissionCommand
             String[] permissionArgs = new String[args.length - 1];
             System.arraycopy(args, 1, permissionArgs, 0, args.length - 1);
             return permissionCommand.onTabComplete(sender, command, "permission", permissionArgs);
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("group")) {
+            // Forward tab completion to GroupCommand
+            String[] groupArgs = new String[args.length - 1];
+            System.arraycopy(args, 1, groupArgs, 0, args.length - 1);
+            return groupCommand.onTabComplete(sender, command, "group", groupArgs);
         }
 
         // Filter completions based on what the user has typed

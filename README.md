@@ -14,6 +14,9 @@
 - **自定义加入消息**：玩家可以设置自己的加入消息
 - **多种消息模式**：支持简单消息模式和前缀-后缀模式
 - **权限系统**：四个权限级别（管理员、颜色用户、普通用户、无权限）
+- **自定义权限组**：支持通过配置文件创建自定义权限组，如VIP、Premium等
+- **动态权限注册**：自定义权限组会自动注册对应的权限节点
+- **优先级系统**：支持自定义权限组和预设权限组的优先级配置
 - **颜色支持**：支持标准颜色代码（&a、&b等）和十六进制颜色代码（&#RRGGBB）
 - **数据库支持**：使用SQLite数据库存储玩家消息
 - **PlaceholderAPI集成**：支持使用PlaceholderAPI的占位符
@@ -31,17 +34,37 @@
 
 插件使用以下权限节点：
 
-- `cjm.admin`：管理员权限，可以管理其他玩家的消息和重载配置
-- `cjm.color`：颜色权限，可以在消息中使用颜色代码
-- `cjm.nocolor`：基本权限，可以设置纯文本消息
-- `cjm.basic`：基础权限，可以查看当前消息模式
+- `customjoinmessage.admin`：管理员权限，可以管理其他玩家的消息和重载配置
+- `customjoinmessage.use.color`：颜色权限，可以在消息中使用颜色代码
+- `customjoinmessage.use.nocolor`：基本权限，可以设置纯文本消息
+- `customjoinmessage.use`：基础权限，可以查看当前消息模式
+- `customjoinmessage.use.<组名>`：自定义权限组权限，如`customjoinmessage.use.vip`
 
 ### 权限级别
 
-1. **管理员**（cjm.admin）：拥有所有权限，包括管理其他玩家的消息
-2. **颜色用户**（cjm.color）：可以使用颜色代码自定义加入消息
-3. **普通用户**（cjm.nocolor）：只能使用纯文本自定义加入消息
+1. **管理员**（customjoinmessage.admin）：拥有所有权限，包括管理其他玩家的消息
+2. **颜色用户**（customjoinmessage.use.color）：可以使用颜色代码自定义加入消息
+3. **普通用户**（customjoinmessage.use.nocolor）：只能使用纯文本自定义加入消息
 4. **无权限**：无法自定义加入消息
+
+### 自定义权限组
+
+插件支持通过配置文件创建自定义权限组，例如VIP、Premium等。每个自定义权限组可以：
+
+- 设置优先级（数值越高优先级越高）
+- 定义完整的加入消息（完整模式）
+- 定义加入前缀和后缀（前后缀模式）
+- 自动注册对应的权限节点（如`customjoinmessage.use.vip`）
+
+### 优先级系统
+
+系统按照以下优先级处理加入消息：
+
+1. **最高优先级**：玩家个人自定义消息（数据库中存储的消息）
+2. **次高优先级**：玩家最高优先级权限组的消息配置
+3. **默认优先级**：插件默认配置的消息
+
+预设权限组的优先级也可以在配置文件中自由调整。
 
 ## 命令说明
 
@@ -62,6 +85,9 @@
 - `/cjm help`：显示管理命令帮助
 - `/setjoin <玩家> <消息>`：为其他玩家设置加入消息
 - `/setjoin <玩家> reset`：清除其他玩家的加入消息
+- `/cjm group list`：列出所有自定义权限组和预设权限组
+- `/cjm group info <组名>`：查看指定权限组的详细信息
+- `/cjm group help`：显示权限组管理命令的帮助信息
 
 ## 配置文件
 
@@ -93,6 +119,30 @@ placeholders:
 # Database settings
 database:
   file: "database.db"
+
+# Predefined permission groups with their priorities
+predefined-permissions:
+  admin:
+    priority: 100
+    permission: "customjoinmessage.admin"
+  color:
+    priority: 50
+    permission: "customjoinmessage.use.color"
+  nocolor:
+    priority: 10
+    permission: "customjoinmessage.use.nocolor"
+
+# Custom permission groups
+permission-groups:
+  vip:
+    priority: 30
+    message: "&6[VIP] %player% 加入了游戏"
+    permission: "customjoinmessage.use.vip"
+  premium:
+    priority: 40
+    prefix: "&b[Premium]"
+    suffix: "&a 加入了服务器"
+    permission: "customjoinmessage.use.premium"
 ```
 
 ### messages.yml
@@ -136,7 +186,7 @@ database:
 
 ## 开发信息
 
-- **版本**：1.0.0
+- **版本**：1.1
 - **Minecraft版本**：
   - Folia：1.20.1+
   - Spigot：1.16+
@@ -171,7 +221,19 @@ database:
 
 ## 更新日志
 
-### v1.0.0
+### v1.1
+- 添加自定义权限组功能，支持通过配置文件创建自定义权限组
+- 实现动态权限注册，自定义权限组会自动注册对应的权限节点
+- 增强优先级系统，支持自定义权限组和预设权限组的优先级配置
+- 添加权限组管理命令（/cjm group list/info/help）
+- 预设权限组优先级可在配置文件中自由调整
+- 修复配置文件和消息文件的自动更新机制
+- 改进文件加载错误处理，提高系统稳定性
+- 优化消息文件读取，支持UTF-8编码
+- 增强配置版本检查，确保平滑升级
+- 添加更详细的日志记录，便于问题排查
+
+### v1.0
 - 初始版本发布
 - 支持自定义加入消息
 - 实现权限系统
