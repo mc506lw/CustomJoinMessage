@@ -9,18 +9,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerQuitListener implements Listener {
     private final CustomJoinMessage plugin;
     private final MessageManager messageManager;
     private final PermissionUtils permissionUtils;
     private final SchedulerUtils schedulerUtils;
     private final PlaceholderUtil placeholderUtil;
 
-    public PlayerJoinListener(CustomJoinMessage plugin) {
+    public PlayerQuitListener(CustomJoinMessage plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
         this.permissionUtils = plugin.getPermissionUtils();
@@ -29,35 +29,35 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
         
-        // Hide default join message if configured
-        if (plugin.getConfigManager().shouldHideDefaultJoinMessage()) {
-            event.setJoinMessage(null);
+        // Hide default quit message if configured
+        if (plugin.getConfigManager().shouldHideDefaultQuitMessage()) {
+            event.setQuitMessage(null);
         }
         
-        // Get custom join message asynchronously
-        CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getJoinMessage(player.getUniqueId().toString());
+        // Get custom quit message asynchronously
+        CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getQuitMessage(player.getUniqueId().toString());
         
         // When the future is complete, process and broadcast the message
         futureMessage.thenAccept(customMessage -> {
             String message;
             
-            // Check if player has a custom permission group
-            String permissionGroup = permissionUtils.getHighestPriorityPermissionGroup(player);
+            // Check if player has a custom permission group for quit messages
+            String permissionGroup = permissionUtils.getHighestPriorityPermissionGroup(player, "quit");
             
             if (plugin.getConfigManager().isPrefixSuffixMode()) {
                 // Prefix-suffix mode
                 if (customMessage != null && !customMessage.isEmpty()) {
                     // Use custom prefix and suffix from database
                     // Process all color codes including RGB formats
-                    message = messageManager.processColors(customMessage);
+                    message = messageManager.processQuitMessageColors(customMessage, player);
                 } else if (permissionGroup != null) {
                     // Use permission group prefix and suffix
-                    String prefix = permissionUtils.getGroupJoinPrefix(permissionGroup);
-                    String suffix = permissionUtils.getGroupJoinSuffix(permissionGroup);
+                    String prefix = permissionUtils.getGroupQuitPrefix(permissionGroup);
+                    String suffix = permissionUtils.getGroupQuitSuffix(permissionGroup);
                     
                     // Format prefix and suffix with placeholders
                     prefix = messageManager.formatMessage(prefix, playerName);
@@ -66,11 +66,11 @@ public class PlayerJoinListener implements Listener {
                     // Build the complete message with color reset before player name
                     message = prefix + "&r" + playerName + suffix;
                     // Process all color codes including RGB formats
-                    message = messageManager.processColors(message);
+                    message = messageManager.processQuitMessageColors(message, player);
                 } else {
                     // Use default prefix and suffix
-                    String prefix = plugin.getConfigManager().getDefaultJoinPrefix();
-                    String suffix = plugin.getConfigManager().getDefaultJoinSuffix();
+                    String prefix = plugin.getConfigManager().getDefaultQuitPrefix();
+                    String suffix = plugin.getConfigManager().getDefaultQuitSuffix();
                     
                     // Format prefix and suffix with placeholders
                     prefix = messageManager.formatMessage(prefix, playerName);
@@ -79,7 +79,7 @@ public class PlayerJoinListener implements Listener {
                     // Build the complete message with color reset before player name
                     message = prefix + "&r" + playerName + suffix;
                     // Process all color codes including RGB formats
-                    message = messageManager.processColors(message);
+                    message = messageManager.processQuitMessageColors(message, player);
                 }
             } else {
                 // Full mode (default)
@@ -88,15 +88,15 @@ public class PlayerJoinListener implements Listener {
                     message = messageManager.formatMessage(customMessage, playerName);
                 } else if (permissionGroup != null) {
                     // Use permission group message
-                    message = permissionUtils.getGroupJoinMessage(permissionGroup);
+                    message = permissionUtils.getGroupQuitMessage(permissionGroup);
                     message = messageManager.formatMessage(message, playerName);
                 } else {
                     // Use default message
-                    message = plugin.getConfigManager().getDefaultJoinMessage();
+                    message = plugin.getConfigManager().getDefaultQuitMessage();
                     message = messageManager.formatMessage(message, playerName);
                 }
                 // Process all color codes including RGB formats
-                message = messageManager.processColors(message);
+                message = messageManager.processQuitMessageColors(message, player);
             }
             
             // Replace placeholders using PlaceholderUtil

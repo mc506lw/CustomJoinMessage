@@ -7,9 +7,13 @@ import org.bukkit.entity.Player;
 
 public class MessageManager {
     private final CustomJoinMessage plugin;
+    private final PermissionUtils permissionUtils;
+    private final PlaceholderUtil placeholderUtil;
 
     public MessageManager(CustomJoinMessage plugin) {
         this.plugin = plugin;
+        this.permissionUtils = plugin.getPermissionUtils();
+        this.placeholderUtil = plugin.getPlaceholderUtil();
     }
 
     /**
@@ -74,8 +78,32 @@ public class MessageManager {
         message = formatMessage(message, player.getName());
         
         // Then replace PlaceholderAPI placeholders if enabled
-        message = PlaceholderUtil.replacePlaceholders(player, message);
+        message = placeholderUtil.replacePlaceholders(player, message);
         
         return message;
+    }
+    
+    /**
+     * Process color codes in a join message based on player permissions
+     * 根据玩家权限处理加入消息中的颜色代码
+     * 
+     * @param message The message to process
+     * @param player The player to check permissions for
+     * @return The message with color codes processed based on permissions
+     */
+    public String processJoinMessageColors(String message, Player player) {
+        return permissionUtils.processJoinMessageColors(player, message);
+    }
+    
+    /**
+     * Process color codes in a quit message based on player permissions
+     * 根据玩家权限处理退出消息中的颜色代码
+     * 
+     * @param message The message to process
+     * @param player The player to check permissions for
+     * @return The message with color codes processed based on permissions
+     */
+    public String processQuitMessageColors(String message, Player player) {
+        return permissionUtils.processQuitMessageColors(player, message);
     }
 }

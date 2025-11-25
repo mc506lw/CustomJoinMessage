@@ -15,15 +15,17 @@ import java.util.List;
 public class GroupCommand implements CommandExecutor, TabCompleter {
     private final CustomJoinMessage plugin;
     private final MessageManager messageManager;
+    private final PermissionUtils permissionUtils;
 
     public GroupCommand(CustomJoinMessage plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
+        this.permissionUtils = plugin.getPermissionUtils();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!PermissionUtils.isAdmin(sender)) {
+        if (!permissionUtils.isAdmin(sender)) {
             messageManager.sendMessage(sender, "no-permission");
             return true;
         }
@@ -92,7 +94,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
                         .replace("%priority%", String.valueOf(priority))
                         .replace("%permission%", permission);
                 
-                sender.sendMessage(message);
+                messageManager.sendMessage(sender, message);
             }
         }
         
@@ -110,7 +112,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
                         .replace("%priority%", String.valueOf(priority))
                         .replace("%permission%", permission);
                 
-                sender.sendMessage(message);
+                messageManager.sendMessage(sender, message);
             }
         }
     }

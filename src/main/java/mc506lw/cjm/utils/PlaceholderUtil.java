@@ -11,6 +11,12 @@ import org.bukkit.entity.Player;
  */
 public class PlaceholderUtil {
     
+    private final CustomJoinMessage plugin;
+    
+    public PlaceholderUtil(CustomJoinMessage plugin) {
+        this.plugin = plugin;
+    }
+    
     /**
      * Replace placeholders in a message
      * 替换消息中的占位符
@@ -19,7 +25,7 @@ public class PlaceholderUtil {
      * @param message The message to replace placeholders in
      * @return The message with placeholders replaced
      */
-    public static String replacePlaceholders(Player player, String message) {
+    public String replacePlaceholders(Player player, String message) {
         if (message == null || message.isEmpty()) {
             return message;
         }
@@ -28,7 +34,7 @@ public class PlaceholderUtil {
         String result = message.replace("%player_name%", player.getName());
         
         // If PlaceholderAPI is enabled, replace PlaceholderAPI placeholders
-        if (CustomJoinMessage.getInstance().getConfigManager().isPlaceholdersEnabled() 
+        if (plugin.getConfigManager().isPlaceholdersEnabled() 
                 && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             result = PlaceholderAPI.setPlaceholders(player, result);
         }
@@ -42,8 +48,8 @@ public class PlaceholderUtil {
      * 
      * @return True if PlaceholderAPI is available and enabled
      */
-    public static boolean isPlaceholderAPIEnabled() {
-        return CustomJoinMessage.getInstance().getConfigManager().isPlaceholdersEnabled() 
+    public boolean isPlaceholderAPIEnabled() {
+        return plugin.getConfigManager().isPlaceholdersEnabled() 
                 && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
 }

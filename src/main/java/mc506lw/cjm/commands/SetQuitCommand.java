@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class SetJoinCommand implements CommandExecutor, TabCompleter {
+public class SetQuitCommand implements CommandExecutor, TabCompleter {
     private final CustomJoinMessage plugin;
     private final MessageManager messageManager;
     private final PermissionUtils permissionUtils;
     private final SchedulerUtils schedulerUtils;
     private final MessageLengthUtil messageLengthUtil;
 
-    public SetJoinCommand(CustomJoinMessage plugin) {
+    public SetQuitCommand(CustomJoinMessage plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
         this.permissionUtils = plugin.getPermissionUtils();
@@ -43,7 +43,7 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
 
         // Handle different command scenarios
         if (args.length == 0) {
-            // View current join message
+            // View current quit message
             if (!(sender instanceof Player)) {
                 messageManager.sendMessage(sender, "console-not-allowed");
                 return true;
@@ -51,44 +51,44 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
 
             Player player = (Player) sender;
             
-            // Get join message asynchronously
-            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getJoinMessage(player.getUniqueId().toString());
+            // Get quit message asynchronously
+            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getQuitMessage(player.getUniqueId().toString());
             
             // Process the result when it's available
-            futureMessage.thenAccept(joinMessage -> {
+            futureMessage.thenAccept(quitMessage -> {
                 schedulerUtils.runTask(() -> {
                     if (plugin.getConfigManager().isPrefixSuffixMode()) {
                         // In prefix-suffix mode, extract and show current prefix and suffix
                         messageManager.sendMessage(player, "current-mode", "%mode%", "prefix-suffix");
                         
-                        if (joinMessage == null || joinMessage.isEmpty()) {
+                        if (quitMessage == null || quitMessage.isEmpty()) {
                             // No custom message, show defaults
-                            String defaultPrefix = plugin.getConfigManager().getDefaultJoinPrefix();
-                            String defaultSuffix = plugin.getConfigManager().getDefaultJoinSuffix();
+                            String defaultPrefix = plugin.getConfigManager().getDefaultQuitPrefix();
+                            String defaultSuffix = plugin.getConfigManager().getDefaultQuitSuffix();
                             messageManager.sendMessage(player, "current-prefix", "%prefix%", defaultPrefix);
                             messageManager.sendMessage(player, "current-suffix", "%suffix%", defaultSuffix);
                         } else {
                             // Extract prefix and suffix from the stored message
                             String playerNameWithReset = "&r" + player.getName();
-                            int playerNameIndex = joinMessage.indexOf(playerNameWithReset);
+                            int playerNameIndex = quitMessage.indexOf(playerNameWithReset);
                             
                             if (playerNameIndex != -1) {
-                                String prefix = joinMessage.substring(0, playerNameIndex);
-                                String suffix = joinMessage.substring(playerNameIndex + playerNameWithReset.length());
+                                String prefix = quitMessage.substring(0, playerNameIndex);
+                                String suffix = quitMessage.substring(playerNameIndex + playerNameWithReset.length());
                                 
                                 messageManager.sendMessage(player, "current-prefix", "%prefix%", prefix.isEmpty() ? "(无)" : prefix);
                                 messageManager.sendMessage(player, "current-suffix", "%suffix%", suffix.isEmpty() ? "(无)" : suffix);
                             } else {
                                 // Fallback if format is unexpected
-                                messageManager.sendMessage(player, "current-message", "%message%", joinMessage);
+                                messageManager.sendMessage(player, "current-message", "%message%", quitMessage);
                             }
                         }
                     } else {
                         // In full mode, show the current message
-                        if (joinMessage == null) {
+                        if (quitMessage == null) {
                             messageManager.sendMessage(player, "no-custom-message");
                         } else {
-                            String formattedMessage = messageManager.formatMessage(joinMessage, player.getName());
+                            String formattedMessage = messageManager.formatMessage(quitMessage, player.getName());
                             messageManager.sendMessage(player, "current-message", "%message%", formattedMessage);
                             // Show color permission info
                             String permissionLevel = permissionUtils.getPermissionLevel(player);
@@ -102,15 +102,15 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("reset")) {
-            // Reset join message
+            // Reset quit message
             if (!(sender instanceof Player)) {
                 messageManager.sendMessage(sender, "console-not-allowed");
                 return true;
             }
 
             Player player = (Player) sender;
-            plugin.getDatabaseManager().removeJoinMessage(player.getUniqueId().toString());
-            messageManager.sendMessage(player, "join-message-cleared");
+            plugin.getDatabaseManager().removeQuitMessage(player.getUniqueId().toString());
+            messageManager.sendMessage(player, "quit-message-cleared");
             return true;
         }
 
@@ -153,7 +153,7 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
             }
 
             // Get current message to extract suffix
-            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getJoinMessage(player.getUniqueId().toString());
+            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getQuitMessage(player.getUniqueId().toString());
             
             futureMessage.thenAccept(currentMessage -> {
                 schedulerUtils.runTask(() -> {
@@ -175,8 +175,8 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
                     String completeMessage = prefix.toString() + "&r" + player.getName() + suffix;
                     
                     // Store the complete message in the database
-                    plugin.getDatabaseManager().setJoinMessage(player.getUniqueId().toString(), player.getName(), completeMessage);
-                    messageManager.sendMessage(player, "join-prefix-set");
+                    plugin.getDatabaseManager().setQuitMessage(player.getUniqueId().toString(), player.getName(), completeMessage);
+                    messageManager.sendMessage(player, "quit-prefix-set");
                 });
             });
             
@@ -222,7 +222,7 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
             }
 
             // Get current message to extract prefix
-            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getJoinMessage(player.getUniqueId().toString());
+            CompletableFuture<String> futureMessage = plugin.getDatabaseManager().getQuitMessage(player.getUniqueId().toString());
             
             futureMessage.thenAccept(currentMessage -> {
                 schedulerUtils.runTask(() -> {
@@ -244,8 +244,8 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
                     String completeMessage = prefix + "&r" + player.getName() + processedSuffix;
                     
                     // Store the complete message in the database
-                    plugin.getDatabaseManager().setJoinMessage(player.getUniqueId().toString(), player.getName(), completeMessage);
-                    messageManager.sendMessage(player, "join-suffix-set");
+                    plugin.getDatabaseManager().setQuitMessage(player.getUniqueId().toString(), player.getName(), completeMessage);
+                    messageManager.sendMessage(player, "quit-suffix-set");
                 });
             });
             
@@ -269,12 +269,12 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
 
-                    plugin.getDatabaseManager().removeJoinMessage(target.getUniqueId().toString());
+                    plugin.getDatabaseManager().removeQuitMessage(target.getUniqueId().toString());
                     messageManager.sendMessage(sender, "player-message-cleared", "%player%", target.getName());
                     return true;
                 }
 
-                 // Set another player's message
+                  // Set another player's message
                   Player target = Bukkit.getPlayer(args[0]);
                   if (target == null) {
                       messageManager.sendMessage(sender, "player-not-found", "%player%", args[0]);
@@ -287,13 +287,13 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
                       message.append(args[i]);
                   }
 
-                  plugin.getDatabaseManager().setJoinMessage(target.getUniqueId().toString(), target.getName(), message.toString());
+                  plugin.getDatabaseManager().setQuitMessage(target.getUniqueId().toString(), target.getName(), message.toString());
                   messageManager.sendMessage(sender, "player-message-set", "%player%", target.getName());
                   return true;
             }
         }
 
-        // Set own join message
+        // Set own quit message
         if (!(sender instanceof Player)) {
             messageManager.sendMessage(sender, "console-not-allowed");
             return true;
@@ -320,8 +320,8 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        plugin.getDatabaseManager().setJoinMessage(player.getUniqueId().toString(), player.getName(), processedMessage);
-        messageManager.sendMessage(player, "join-message-set");
+        plugin.getDatabaseManager().setQuitMessage(player.getUniqueId().toString(), player.getName(), processedMessage);
+        messageManager.sendMessage(player, "quit-message-set");
         return true;
     }
 
@@ -356,9 +356,6 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
             messageManager.sendMessage(sender, "help-no-color-permission");
         }
         
-        // Send quit message help
-        messageManager.sendMessage(sender, "help-quit-message");
-        
         // Send admin commands if sender is admin
         if (permissionUtils.isAdmin(sender)) {
             if ("prefix-suffix".equals(mode)) {
@@ -369,7 +366,6 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
                 messageManager.sendMessage(sender, "help-admin-reset-message");
             }
             messageManager.sendMessage(sender, "help-admin-reload");
-            messageManager.sendMessage(sender, "help-quit-admin");
         }
     }
 

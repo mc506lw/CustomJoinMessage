@@ -16,15 +16,17 @@ import java.util.List;
 public class PermissionCommand implements CommandExecutor, TabCompleter {
     private final CustomJoinMessage plugin;
     private final MessageManager messageManager;
+    private final PermissionUtils permissionUtils;
 
     public PermissionCommand(CustomJoinMessage plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
+        this.permissionUtils = plugin.getPermissionUtils();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!PermissionUtils.isAdmin(sender)) {
+        if (!permissionUtils.isAdmin(sender)) {
             messageManager.sendMessage(sender, "no-permission");
             return true;
         }
@@ -40,17 +42,21 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            Player target = Bukkit.getPlayer(args[1]);
+            String playerName = args[1];
+            Player target = Bukkit.getPlayer(playerName);
+            
             if (target == null) {
-                messageManager.sendMessage(sender, "player-not-found", "%player%", args[1]);
+                // Player is offline, check offline permissions asynchronously
+                checkOfflinePlayerPermissions(sender, playerName);
                 return true;
             }
 
-            String permissionLevel = PermissionUtils.getPermissionLevel(target);
-            boolean canUseColors = PermissionUtils.canUseColors(target);
-            boolean canUseNoColors = PermissionUtils.canUseNoColors(target);
-            boolean canUseBasic = PermissionUtils.canUseBasic(target);
-            boolean isAdmin = PermissionUtils.isAdmin(target);
+            // Player is online, check permissions normally
+            String permissionLevel = permissionUtils.getPermissionLevel(target);
+            boolean canUseColors = permissionUtils.canUseColors(target);
+            boolean canUseNoColors = permissionUtils.canUseNoColors(target);
+            boolean canUseBasic = permissionUtils.canUseBasic(target);
+            boolean isAdmin = permissionUtils.isAdmin(target);
 
             messageManager.sendMessage(sender, "permission-check-result", "%player%", target.getName());
             messageManager.sendMessage(sender, "permission-level-info", "%level%", permissionLevel);
@@ -63,6 +69,44 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 
         messageManager.sendMessage(sender, "unknown-command");
         return true;
+    }
+
+    /**
+     * 检查离线玩家的权限
+     * @param sender 命令发送者
+     * @param playerName 玩家名称
+     */
+    private void checkOfflinePlayerPermissions(CommandSender sender, String playerName) {
+        // 通过玩家名获取UUID
+        plugin.getDatabaseManager().getPlayerUuid(playerName).thenAccept(uuid -> {
+            if (uuid == null) {
+                messageManager.sendMessage(sender, "player-not-found", "%player%", playerName);
+                return;
+            }
+            
+            // 检查玩家是否存在于数据库中
+            plugin.getDatabaseManager().playerExists(uuid).thenAccept(exists -> {
+                if (!exists) {
+                    messageManager.sendMessage(sender, "player-not-found", "%player%", playerName);
+                    return;
+                }
+                
+                // 获取离线玩家的权限信息
+                String permissionLevel = "离线玩家";
+                boolean canUseColors = false;
+                boolean canUseNoColors = false;
+                boolean canUseBasic = false;
+                boolean isAdmin = false;
+                
+                // 发送权限信息
+                messageManager.sendMessage(sender, "permission-check-result", "%player%", playerName);
+                messageManager.sendMessage(sender, "permission-level-info", "%level%", permissionLevel);
+                messageManager.sendMessage(sender, "permission-color-info", "%status%", "§7无法检查");
+                messageManager.sendMessage(sender, "permission-nocolor-info", "%status%", "§7无法检查");
+                messageManager.sendMessage(sender, "permission-basic-info", "%status%", "§7无法检查");
+                messageManager.sendMessage(sender, "permission-admin-info", "%status%", "§7无法检查");
+            });
+        });
     }
 
     private void sendHelp(CommandSender sender) {

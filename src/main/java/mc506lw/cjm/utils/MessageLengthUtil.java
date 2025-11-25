@@ -14,7 +14,7 @@ public class MessageLengthUtil {
      * @param text 要计算的文本
      * @return 非颜色代码的字符数
      */
-    public static int getLengthWithoutColorCodes(String text) {
+    public int getLengthWithoutColorCodes(String text) {
         if (text == null) {
             return 0;
         }
@@ -32,7 +32,7 @@ public class MessageLengthUtil {
      * @param maxLength 最大长度限制
      * @return 如果超过限制返回true，否则返回false
      */
-    public static boolean exceedsLengthLimit(String text, int maxLength) {
+    public boolean exceedsLengthLimit(String text, int maxLength) {
         if (maxLength < 0) {
             // 如果限制为-1，表示无限制
             return false;
@@ -46,7 +46,7 @@ public class MessageLengthUtil {
      * @param text 要检查的文本
      * @return 如果包含颜色代码返回true，否则返回false
      */
-    public static boolean containsColorCodes(String text) {
+    public boolean containsColorCodes(String text) {
         if (text == null) {
             return false;
         }
@@ -75,7 +75,7 @@ public class MessageLengthUtil {
      * @param maxLength 最大长度
      * @return 截断后的文本
      */
-    public static String truncateToLength(String text, int maxLength) {
+    public String truncateToLength(String text, int maxLength) {
         if (text == null || maxLength < 0) {
             return text;
         }

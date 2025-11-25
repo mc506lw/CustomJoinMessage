@@ -355,4 +355,31 @@ public class ConfigManager {
     public boolean isPlaceholdersEnabled() {
         return config.getBoolean("placeholders.enabled", true);
     }
+
+    public String getDefaultQuitMessage() {
+        return config.getString("default-quit-message", "&e%player_name% 离开了服务器");
+    }
+
+    public String getDefaultQuitPrefix() {
+        return config.getString("default-quit-prefix", "&e再见 ");
+    }
+
+    public String getDefaultQuitSuffix() {
+        return config.getString("default-quit-suffix", " 离开了服务器！");
+    }
+
+    public boolean shouldHideDefaultQuitMessage() {
+        return config.getBoolean("hide-default-quit-message", true);
+    }
+
+    public int getMaxMessageLength() {
+        // Return the maximum length based on the message mode
+        if (isPrefixSuffixMode()) {
+            // For prefix-suffix mode, use the larger of prefix or suffix limit
+            return Math.max(getPrefixLengthLimit(), getSuffixLengthLimit());
+        } else {
+            // For full mode, use the full mode limit
+            return getFullModeLengthLimit();
+        }
+    }
 }

@@ -11,8 +11,13 @@ import java.util.function.Consumer;
  * 工具类，用于适配Spigot和Folia的调度系统
  */
 public class SchedulerUtils {
+    private final Plugin plugin;
     private static boolean isFolia = false;
     private static boolean checked = false;
+
+    public SchedulerUtils(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * 检查服务器是否为Folia
@@ -33,7 +38,7 @@ public class SchedulerUtils {
     /**
      * 运行任务（全局）
      */
-    public static void runTask(Plugin plugin, Runnable task) {
+    public void runTask(Runnable task) {
         if (isFolia()) {
             try {
                 // 使用反射调用Folia的GlobalRegionScheduler
@@ -54,7 +59,7 @@ public class SchedulerUtils {
     /**
      * 异步运行任务
      */
-    public static void runTaskAsynchronously(Plugin plugin, Runnable task) {
+    public void runTaskAsynchronously(Runnable task) {
         if (isFolia()) {
             try {
                 // 使用反射调用Folia的AsyncScheduler

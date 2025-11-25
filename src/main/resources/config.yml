@@ -22,6 +22,19 @@ default-join-prefix: "&e欢迎 "
 # Used when message-mode is prefix_suffix | 当message-mode为prefix_suffix时使用
 default-join-suffix: " 加入服务器！"
 
+# Default quit message for players who haven't set a custom message | 未设置自定义消息的玩家的默认退出消息
+# You can use PlaceholderAPI placeholders here | 你可以在这里使用PlaceholderAPI占位符
+# Use %player_name% for the player's name | 使用 %player_name% 表示玩家名称
+default-quit-message: "&e%player_name% 离开了服务器"
+
+# Default quit prefix for prefix_suffix mode | 前后缀模式下的默认退出前缀
+# Used when message-mode is prefix_suffix | 当message-mode为prefix_suffix时使用
+default-quit-prefix: "&e再见 "
+
+# Default quit suffix for prefix_suffix mode | 前后缀模式下的默认退出后缀
+# Used when message-mode is prefix_suffix | 当message-mode为prefix_suffix时使用
+default-quit-suffix: " 离开了服务器！"
+
 # Message length limits | 消息长度限制
 # These limits only count non-color code characters | 这些限制只计算非颜色代码字符
 # Set to -1 to disable the limit | 设置为-1以禁用限制
@@ -37,6 +50,9 @@ length-limits:
 
 # Whether to hide the default join message | 是否隐藏默认加入消息
 hide-default-join-message: true
+
+# Whether to hide the default quit message | 是否隐藏默认退出消息
+hide-default-quit-message: true
 
 # PlaceholderAPI settings | PlaceholderAPI设置
 placeholders:
@@ -66,6 +82,15 @@ database:
 # You can define custom permission groups here | 你可以在这里定义自定义权限组
 # Each group has a priority (higher number = higher priority) | 每个组都有一个优先级（数字越大优先级越高）
 # When a player has multiple permissions, the group with the highest priority will be used | 当玩家有多个权限时，将使用优先级最高的组
+#
+# Permission format | 权限格式:
+# - customjoinmessage.join.<groupname> - Join message permission for this group | 这个组的加入消息权限
+# - customjoinmessage.quit.<groupname> - Quit message permission for this group | 这个组的退出消息权限
+# - customjoinmessage.<groupname> - Both join and quit message permission for this group | 这个组的加入和退出消息权限
+# - customjoinmessage.use.<groupname> - Legacy format for backward compatibility | 向后兼容的旧格式
+#
+# Example: If a player has customjoinmessage.vip, they will have both join and quit VIP permissions
+# 示例：如果玩家有customjoinmessage.vip权限，他们将同时拥有加入和退出的VIP权限
 permission-groups:
   # Example groups | 示例组
   vip:
@@ -77,6 +102,12 @@ permission-groups:
     join-prefix: "&6[&eVIP&6] &e欢迎 "
     # Join suffix for this group (prefix_suffix mode) | 这个组的加入后缀（前后缀模式）
     join-suffix: " 加入服务器！"
+    # Quit message for this group (full mode) | 这个组的退出消息（完整模式）
+    quit-message: "&6[&eVIP&6] &e%player_name% 离开了服务器"
+    # Quit prefix for this group (prefix_suffix mode) | 这个组的退出前缀（前后缀模式）
+    quit-prefix: "&6[&eVIP&6] &e再见 "
+    # Quit suffix for this group (prefix_suffix mode) | 这个组的退出后缀（前后缀模式）
+    quit-suffix: " 离开了服务器！"
   
   premium:
     # Priority of this group | 这个组的优先级
@@ -87,6 +118,12 @@ permission-groups:
     join-prefix: "&b[&3PREMIUM&b] &3欢迎 "
     # Join suffix for this group (prefix_suffix mode) | 这个组的加入后缀（前后缀模式）
     join-suffix: " 加入服务器！"
+    # Quit message for this group (full mode) | 这个组的退出消息（完整模式）
+    quit-message: "&b[&3PREMIUM&b] &3%player_name% 离开了服务器"
+    # Quit prefix for this group (prefix_suffix mode) | 这个组的退出前缀（前后缀模式）
+    quit-prefix: "&b[&3PREMIUM&b] &3再见 "
+    # Quit suffix for this group (prefix_suffix mode) | 这个组的退出后缀（前后缀模式）
+    quit-suffix: " 离开了服务器！"
   
   # You can add more groups below | 你可以在下面添加更多组
 

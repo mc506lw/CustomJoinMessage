@@ -60,22 +60,31 @@ public class CustomJoinMessageExpansion extends PlaceholderExpansion {
         }
         
         // 使用CompletableFuture处理异步操作
-        try {
-            String result = null;
-            switch (params.toLowerCase()) {
-                case "join_message":
-                    // 使用同步方法获取结果，避免阻塞主线程
-                    result = getJoinMessageSync(playerName);
-                    break;
-                case "join_prefix":
-                    result = getJoinPrefixSync(playerName);
-                    break;
-                case "join_suffix":
-                    result = getJoinSuffixSync(playerName);
-                    break;
-                default:
-                    return null;
-            }
+            try {
+                String result = null;
+                switch (params.toLowerCase()) {
+                    case "join_message":
+                        // 使用同步方法获取结果，避免阻塞主线程
+                        result = getJoinMessageSync(playerName);
+                        break;
+                    case "join_prefix":
+                        result = getJoinPrefixSync(playerName);
+                        break;
+                    case "join_suffix":
+                        result = getJoinSuffixSync(playerName);
+                        break;
+                    case "quit_message":
+                        result = getQuitMessageSync(playerName);
+                        break;
+                    case "quit_prefix":
+                        result = getQuitPrefixSync(playerName);
+                        break;
+                    case "quit_suffix":
+                        result = getQuitSuffixSync(playerName);
+                        break;
+                    default:
+                        return null;
+                }
             
             // 更新缓存
             cache.put(cacheKey, result != null ? result : "");
@@ -129,6 +138,51 @@ public class CustomJoinMessageExpansion extends PlaceholderExpansion {
             return future.get(); // 等待异步操作完成
         } catch (Exception e) {
             plugin.getLogger().warning("Error getting join suffix: " + e.getMessage());
+            return "";
+        }
+    }
+    
+    /**
+     * 同步获取退出消息
+     * @param playerName 玩家名
+     * @return 退出消息
+     */
+    private String getQuitMessageSync(String playerName) {
+        try {
+            CompletableFuture<String> future = plugin.getDatabaseManager().getQuitMessage(playerName);
+            return future.get(); // 等待异步操作完成
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error getting quit message: " + e.getMessage());
+            return "";
+        }
+    }
+    
+    /**
+     * 同步获取退出前缀
+     * @param playerName 玩家名
+     * @return 退出前缀
+     */
+    private String getQuitPrefixSync(String playerName) {
+        try {
+            CompletableFuture<String> future = plugin.getDatabaseManager().getQuitPrefix(playerName);
+            return future.get(); // 等待异步操作完成
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error getting quit prefix: " + e.getMessage());
+            return "";
+        }
+    }
+    
+    /**
+     * 同步获取退出后缀
+     * @param playerName 玩家名
+     * @return 退出后缀
+     */
+    private String getQuitSuffixSync(String playerName) {
+        try {
+            CompletableFuture<String> future = plugin.getDatabaseManager().getQuitSuffix(playerName);
+            return future.get(); // 等待异步操作完成
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error getting quit suffix: " + e.getMessage());
             return "";
         }
     }

@@ -21,6 +21,12 @@ messages:
   # Message when a player clears their join suffix | 玩家清除加入后缀时的消息
   join-suffix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人加入后缀已清除，将使用服务器默认后缀。"
 
+  # Message when a player successfully sets their quit message | 玩家成功设置退出消息时的消息
+  quit-message-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人退出消息已成功设置！"
+
+  # Message when a player clears their quit message | 玩家清除退出消息时的消息
+  quit-message-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的个人退出消息已清除，将使用服务器默认消息。"
+
   # Message when an admin successfully reloads the config | 管理员成功重载配置时的消息
   config-reloaded: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa配置文件已重载！"
 
@@ -53,8 +59,17 @@ messages:
   # Message when an admin clears another player's join suffix | 管理员清除其他玩家加入后缀时的消息
   player-suffix-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功清除了 &#f9e2af%player% &#89b4fa的加入后缀。"
 
+  # Message when an admin sets another player's quit message | 管理员设置其他玩家退出消息时的消息
+  player-quit-message-set: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功为 &#f9e2af%player% &#89b4fa设置了退出消息。"
+
+  # Message when an admin clears another player's quit message | 管理员清除其他玩家退出消息时的消息
+  player-quit-message-cleared: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你已成功清除了 &#f9e2af%player% &#89b4fa的退出消息。"
+
   # Message shown when a player views their current join message | 玩家查看当前加入消息时显示的消息
   current-message: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前的加入消息: &#cdd6f4%message%"
+
+  # Message shown when a player views their current quit message | 玩家查看当前退出消息时显示的消息
+  current-quit-message: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你当前的退出消息: &#cdd6f4%message%"
 
   # Message shown when a player views their permission level | 玩家查看权限级别时显示的消息
   permission-level: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa你的权限级别: &#cdd6f4%level%"
@@ -84,6 +99,16 @@ messages:
   help-admin-set-message: "&#89b4fa/setjoin <玩家> <消息> §7- 为其他玩家设置加入消息"
   help-admin-reset-message: "&#89b4fa/setjoin <玩家> reset §7- 清除其他玩家的加入消息"
   help-admin-reload: "&#89b4fa/cjm reload §7- 重载配置文件"
+  help-quit-message: "&#89b4fa/setquit §7- 设置你的退出消息"
+  help-quit-admin: "&#89b4fa/setquit <玩家> <消息> §7- 为其他玩家设置退出消息"
+  
+  # Quit message help | 退出消息帮助
+  quit-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 退出消息帮助 ==="
+  quit-help-view: "&#89b4fa/setquit §7- 查看你当前的退出消息"
+  quit-help-set: "&#89b4fa/setquit <消息> §7- 设置你的退出消息"
+  quit-help-remove: "&#89b4fa/setquit remove §7- 移除你的退出消息"
+  quit-help-admin-set: "&#89b4fa/setquit <玩家> <消息> §7- 为其他玩家设置退出消息"
+  quit-help-admin-remove: "&#89b4fa/setquit <玩家> remove §7- 为其他玩家移除退出消息"
   
   # Admin help messages | 管理员帮助消息
   admin-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 管理命令帮助 ==="
@@ -92,6 +117,11 @@ messages:
   admin-help-group: "&#89b4fa/cjm group list §7- 列出所有自定义权限组"
   admin-help-help: "&#89b4fa/cjm help §7- 显示此帮助信息"
   admin-help-config-note: "&#89b4fa注意: 消息模式请在config.yml中配置"
+  admin-help-join-note: "&#89b4fa加入消息命令: /setjoin [prefix|suffix|reset|help] [玩家] [消息]"
+  admin-help-quit-note: "&#89b4fa退出消息命令: /setquit [set|remove|help] [玩家] [消息]"
+  admin-help-resetplayer: "&#89b4fa/cjm resetplayer <玩家> [–force] §7- 重置指定玩家的所有数据"
+  admin-help-listplayers: "&#89b4fa/cjm listplayers §7- 列出数据库中的所有玩家"
+  admin-help-deleteplayer: "&#89b4fa/cjm deleteplayer <uuid> §7- 通过UUID删除玩家数据"
   
   # Group command messages | 权限组命令消息
   group-help-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== CustomJoinMessage 权限组命令帮助 ==="
@@ -151,6 +181,7 @@ messages:
   # Error messages | 错误消息
   no-permission: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8你没有权限执行此命令。"
   no-color-permission: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8你没有权限在消息中使用颜色代码。"
+  no-quit-permission: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8你没有权限设置退出消息。"
   player-not-found: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8找不到玩家: &#f2cdcd%player%"
   invalid-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/setjoin help &#f38ba8查看帮助。"
   invalid-usage-cjm: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm help &#f38ba8查看帮助。"
@@ -166,3 +197,24 @@ messages:
   
   # Other messages | 其他消息
   unknown-command: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8未知命令。使用 &#6c7086/cjm help &#f38ba8查看帮助。"
+  
+  # Reset player command messages | 重置玩家数据命令消息
+  resetplayer-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm resetplayer <玩家> [–force] &#f38ba8重置玩家数据。"
+  player-data-reset: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#a6e3a1玩家 &#f2cdcd%player% &#a6e3a1的数据已成功重置。"
+  player-data-reset-failed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8重置玩家 &#f2cdcd%player% &#f38ba8的数据失败: &#f2cdcd%error%"
+
+  # List players command messages | 列出玩家命令消息
+  listplayers-header: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f9e2af=== 数据库中的玩家列表 ==="
+  listplayers-empty: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8数据库中没有玩家数据。"
+  listplayers-info: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#89b4fa点击删除按钮可删除玩家数据"
+  listplayers-format: "&#89b4fa玩家: &#f9e2af%username% &#7f8498(&#94e2d5%uuid%&#7f8498)"
+  listplayers-delete-button: "&#f38ba8[删除]"
+  listplayers-delete-hover: "&#f38ba8点击删除 %username% 的数据"
+  listplayers-footer: "&#89b4fa共找到 &#f9e2af%count% &#89b4fa名玩家"
+  listplayers-failed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8获取玩家列表失败: &#f2cdcd%error%"
+  
+  # Delete player command messages | 删除玩家命令消息
+  deleteplayer-usage: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8用法错误。使用 &#6c7086/cjm deleteplayer <uuid> &#f38ba8删除玩家数据。"
+  deleteplayer-success: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#a6e3a1成功删除UUID为 &#f2cdcd%uuid% &#a6e3a1的玩家数据"
+  deleteplayer-failed: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8删除失败，可能找不到该UUID的玩家数据"
+  deleteplayer-error: "&#b2dfd5[&#9fd4d0C&#8bcacaJ&#78bfc5M&#64b4bf] &#f38ba8删除玩家数据时出错: &#f2cdcd%error%"

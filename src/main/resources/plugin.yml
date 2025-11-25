@@ -11,20 +11,57 @@ commands:
     description: Set your custom join message | 设置你的自定义加入消息
     usage: /setjoin [player] [message|prefix|suffix|reset]
     permission: customjoinmessage.use
+  setquit:
+    description: Set your custom quit message | 设置你的自定义退出消息
+    usage: /setquit [set|remove|help] [player] [message]
+    permission: cjm.quit
   cjm:
     description: CustomJoinMessage management commands | CustomJoinMessage管理命令
     usage: /cjm [reload|mode|help|permission]
     permission: customjoinmessage.admin
 permissions:
-  customjoinmessage.use:
+  # Join message permissions | 加入消息权限
+  customjoinmessage.join.use:
     description: Allows player to set their own join message | 允许玩家设置自己的加入消息
     default: true
+  customjoinmessage.join.use.color:
+    description: Allows players to use colors in their join message | 允许玩家在加入消息中使用颜色
+    default: op
+  customjoinmessage.join.use.nocolor:
+    description: Allows players to set join message without colors | 允许玩家设置无颜色的加入消息
+    default: true
+  
+  # Quit message permissions | 退出消息权限
+  customjoinmessage.quit.use:
+    description: Allows player to set their own quit message | 允许玩家设置自己的退出消息
+    default: true
+  customjoinmessage.quit.use.color:
+    description: Allows players to use colors in their quit message | 允许玩家在退出消息中使用颜色
+    default: op
+  customjoinmessage.quit.use.nocolor:
+    description: Allows players to set quit message without colors | 允许玩家设置无颜色的退出消息
+    default: true
+  
+  # Other permissions | 其他权限
+  customjoinmessage.admin:
+    description: Allows player to manage other players' messages and reload config | 允许玩家管理其他玩家的消息和重载配置
+    default: op
+  
+  # Legacy permissions for backward compatibility | 向后兼容的旧权限
+  customjoinmessage.use:
+    description: Allows player to set their own join message (legacy) | 允许玩家设置自己的加入消息（旧版）
+    default: true
   customjoinmessage.use.color:
-    description: Allows players to use colors in their join message
+    description: Allows players to use colors in their join message (legacy) | 允许玩家在加入消息中使用颜色（旧版）
     default: op
   customjoinmessage.use.nocolor:
-    description: Allows players to set join message without colors
+    description: Allows players to set join message without colors (legacy) | 允许玩家设置无颜色的加入消息（旧版）
     default: true
-  customjoinmessage.admin:
-    description: Allows player to manage other players' join messages and reload config | 允许玩家管理其他玩家的加入消息和重载配置
+  
+  # Command permissions | 命令权限
+  cjm.quit:
+    description: Allows player to use setquit command | 允许玩家使用setquit命令
+    default: true
+  cjm.quit.others:
+    description: Allows player to set other players' quit messages | 允许玩家设置其他玩家的退出消息
     default: op
