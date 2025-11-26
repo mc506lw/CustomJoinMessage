@@ -194,6 +194,24 @@ public class PermissionUtils {
     }
     
     /**
+     * 获取玩家的权限组
+     * @param player 玩家
+     * @return 权限组名称，如果没有权限组则返回null
+     */
+    public String getPermissionGroup(Player player) {
+        return getHighestPriorityPermissionGroup(player);
+    }
+    
+    /**
+     * 获取离线玩家的权限组
+     * @param playerName 玩家名称
+     * @return 权限组名称，如果没有权限组则返回null
+     */
+    public String getPermissionGroup(String playerName) {
+        return getOfflinePermissionLevel(playerName);
+    }
+    
+    /**
      * 获取玩家的最高优先级权限组（包括自定义权限组和预设权限组）
      * @param player 玩家
      * @return 权限组名称，如果没有权限组则返回null
@@ -277,8 +295,8 @@ public class PermissionUtils {
             // 如果只有加入消息无颜色权限，移除所有颜色代码
             return removeColorCodes(message);
         } else {
-            // 如果没有基本权限，返回空字符串或默认消息
-            return "";
+            // 如果没有基本权限，移除颜色代码但保留消息内容
+            return removeColorCodes(message);
         }
     }
     
@@ -296,8 +314,8 @@ public class PermissionUtils {
             // 如果只有退出消息无颜色权限，移除所有颜色代码
             return removeColorCodes(message);
         } else {
-            // 如果没有基本权限，返回空字符串或默认消息
-            return "";
+            // 如果没有基本权限，移除颜色代码但保留消息内容
+            return removeColorCodes(message);
         }
     }
     
@@ -342,7 +360,7 @@ public class PermissionUtils {
      * @param message 原始消息
      * @return 移除颜色代码后的消息
      */
-    private String removeColorCodes(String message) {
+    public String removeColorCodes(String message) {
         if (message == null) return null;
         
         // 移除传统颜色代码 (&a, &b等)

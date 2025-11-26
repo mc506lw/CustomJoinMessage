@@ -41,6 +41,12 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        // Handle help command first
+        if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
+            sendHelp(sender);
+            return true;
+        }
+
         // Handle different command scenarios
         if (args.length == 0) {
             // View current join message
@@ -253,12 +259,6 @@ public class SetJoinCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length >= 2) {
-            if (args[0].equalsIgnoreCase("help")) {
-                // Show help
-                sendHelp(sender);
-                return true;
-            }
-
             // Admin setting another player's message
             if (permissionUtils.isAdmin(sender)) {
                 if (args.length == 2 && args[1].equalsIgnoreCase("reset")) {

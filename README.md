@@ -302,26 +302,7 @@ predefined-permissions:
 
 #### 依赖注入实现
 
-所有工具类现在通过CustomJoinMessage主类初始化，并通过依赖注入传递给需要它们的类：
-
-```java
-// 在CustomJoinMessage主类中初始化
-messageManager = new MessageManager(this);
-permissionUtils = new PermissionUtils(this);
-schedulerUtils = new SchedulerUtils(this);
-placeholderUtil = new PlaceholderUtil(this);
-messageLengthUtil = new MessageLengthUtil(this);
-
-// 在其他类中通过构造函数注入
-public SetJoinCommand(CustomJoinMessage plugin) {
-    this.plugin = plugin;
-    this.messageManager = plugin.getMessageManager();
-    this.permissionUtils = plugin.getPermissionUtils();
-    // ...
-}
-```
-
-这种架构设计使插件更加模块化，便于维护和扩展。
+所有工具类现在通过CustomJoinMessage主类初始化，并通过依赖注入传递给需要它们的类，使插件更加模块化，便于维护和扩展。
 
 ## 故障排除
 
@@ -371,7 +352,7 @@ public SetJoinCommand(CustomJoinMessage plugin) {
 - 修复管理员权限显示异常问题，确保权限检查的一致性
 - 添加MySQL数据库支持
 - 优化异步操作，所有数据库操作都是异步的
-- 增强Tab补全功能
+- 修复数据库存储互斥问题：现在加入消息和退出消息可以独立存储，不再相互覆盖
 
 ### v1.1
 - 添加自定义权限组功能，支持通过配置文件创建自定义权限组

@@ -119,20 +119,54 @@ public class DatabaseManager {
             String tableName = databaseType.equalsIgnoreCase("mysql") ? 
                 plugin.getConfigManager().getMySQLTable() : "joinmessages";
                 
-            String query = "INSERT OR REPLACE INTO " + tableName + " (uuid, username, message) VALUES (?, ?, ?)";
-            
             if (databaseType.equalsIgnoreCase("mysql")) {
-                query = "INSERT INTO " + tableName + " (uuid, username, message) VALUES (?, ?, ?) " +
+                // For MySQL, use ON DUPLICATE KEY UPDATE to preserve other columns
+                String query = "INSERT INTO " + tableName + " (uuid, username, message) VALUES (?, ?, ?) " +
                         "ON DUPLICATE KEY UPDATE username = VALUES(username), message = VALUES(message)";
-            }
-            
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, uuid);
-                statement.setString(2, username);
-                statement.setString(3, message);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                plugin.getLogger().severe("Failed to set join message: " + e.getMessage());
+                
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.setString(1, uuid);
+                    statement.setString(2, username);
+                    statement.setString(3, message);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set join message: " + e.getMessage());
+                }
+            } else {
+                // For SQLite, we need to preserve existing data
+                try {
+                    // First check if the record exists
+                    String checkQuery = "SELECT uuid FROM " + tableName + " WHERE uuid = ?";
+                    boolean recordExists = false;
+                    
+                    try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                        checkStatement.setString(1, uuid);
+                        ResultSet resultSet = checkStatement.executeQuery();
+                        recordExists = resultSet.next();
+                    }
+                    
+                    if (recordExists) {
+                        // Update only the message column, preserving other columns
+                        String updateQuery = "UPDATE " + tableName + " SET username = ?, message = ? WHERE uuid = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                            updateStatement.setString(1, username);
+                            updateStatement.setString(2, message);
+                            updateStatement.setString(3, uuid);
+                            updateStatement.executeUpdate();
+                        }
+                    } else {
+                        // Insert a new record
+                        String insertQuery = "INSERT INTO " + tableName + " (uuid, username, message) VALUES (?, ?, ?)";
+                        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                            insertStatement.setString(1, uuid);
+                            insertStatement.setString(2, username);
+                            insertStatement.setString(3, message);
+                            insertStatement.executeUpdate();
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set join message: " + e.getMessage());
+                }
             }
         });
     }
@@ -258,20 +292,54 @@ public class DatabaseManager {
             String tableName = databaseType.equalsIgnoreCase("mysql") ? 
                 plugin.getConfigManager().getMySQLTable() : "joinmessages";
                 
-            String query = "INSERT OR REPLACE INTO " + tableName + " (uuid, username, quit_message) VALUES (?, ?, ?)";
-            
             if (databaseType.equalsIgnoreCase("mysql")) {
-                query = "INSERT INTO " + tableName + " (uuid, username, quit_message) VALUES (?, ?, ?) " +
+                // For MySQL, use ON DUPLICATE KEY UPDATE to preserve other columns
+                String query = "INSERT INTO " + tableName + " (uuid, username, quit_message) VALUES (?, ?, ?) " +
                         "ON DUPLICATE KEY UPDATE username = VALUES(username), quit_message = VALUES(quit_message)";
-            }
-            
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, uuid);
-                statement.setString(2, username);
-                statement.setString(3, message);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                plugin.getLogger().severe("Failed to set quit message: " + e.getMessage());
+                
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.setString(1, uuid);
+                    statement.setString(2, username);
+                    statement.setString(3, message);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit message: " + e.getMessage());
+                }
+            } else {
+                // For SQLite, we need to preserve existing data
+                try {
+                    // First check if the record exists
+                    String checkQuery = "SELECT uuid FROM " + tableName + " WHERE uuid = ?";
+                    boolean recordExists = false;
+                    
+                    try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                        checkStatement.setString(1, uuid);
+                        ResultSet resultSet = checkStatement.executeQuery();
+                        recordExists = resultSet.next();
+                    }
+                    
+                    if (recordExists) {
+                        // Update only the quit_message column, preserving other columns
+                        String updateQuery = "UPDATE " + tableName + " SET username = ?, quit_message = ? WHERE uuid = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                            updateStatement.setString(1, username);
+                            updateStatement.setString(2, message);
+                            updateStatement.setString(3, uuid);
+                            updateStatement.executeUpdate();
+                        }
+                    } else {
+                        // Insert a new record
+                        String insertQuery = "INSERT INTO " + tableName + " (uuid, username, quit_message) VALUES (?, ?, ?)";
+                        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                            insertStatement.setString(1, uuid);
+                            insertStatement.setString(2, username);
+                            insertStatement.setString(3, message);
+                            insertStatement.executeUpdate();
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit message: " + e.getMessage());
+                }
             }
         });
     }
@@ -281,20 +349,54 @@ public class DatabaseManager {
             String tableName = databaseType.equalsIgnoreCase("mysql") ? 
                 plugin.getConfigManager().getMySQLTable() : "joinmessages";
                 
-            String query = "INSERT OR REPLACE INTO " + tableName + " (uuid, username, quit_prefix) VALUES (?, ?, ?)";
-            
             if (databaseType.equalsIgnoreCase("mysql")) {
-                query = "INSERT INTO " + tableName + " (uuid, username, quit_prefix) VALUES (?, ?, ?) " +
+                // For MySQL, use ON DUPLICATE KEY UPDATE to preserve other columns
+                String query = "INSERT INTO " + tableName + " (uuid, username, quit_prefix) VALUES (?, ?, ?) " +
                         "ON DUPLICATE KEY UPDATE username = VALUES(username), quit_prefix = VALUES(quit_prefix)";
-            }
-            
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, uuid);
-                statement.setString(2, username);
-                statement.setString(3, prefix);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                plugin.getLogger().severe("Failed to set quit prefix: " + e.getMessage());
+                
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.setString(1, uuid);
+                    statement.setString(2, username);
+                    statement.setString(3, prefix);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit prefix: " + e.getMessage());
+                }
+            } else {
+                // For SQLite, we need to preserve existing data
+                try {
+                    // First check if the record exists
+                    String checkQuery = "SELECT uuid FROM " + tableName + " WHERE uuid = ?";
+                    boolean recordExists = false;
+                    
+                    try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                        checkStatement.setString(1, uuid);
+                        ResultSet resultSet = checkStatement.executeQuery();
+                        recordExists = resultSet.next();
+                    }
+                    
+                    if (recordExists) {
+                        // Update only the quit_prefix column, preserving other columns
+                        String updateQuery = "UPDATE " + tableName + " SET username = ?, quit_prefix = ? WHERE uuid = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                            updateStatement.setString(1, username);
+                            updateStatement.setString(2, prefix);
+                            updateStatement.setString(3, uuid);
+                            updateStatement.executeUpdate();
+                        }
+                    } else {
+                        // Insert a new record
+                        String insertQuery = "INSERT INTO " + tableName + " (uuid, username, quit_prefix) VALUES (?, ?, ?)";
+                        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                            insertStatement.setString(1, uuid);
+                            insertStatement.setString(2, username);
+                            insertStatement.setString(3, prefix);
+                            insertStatement.executeUpdate();
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit prefix: " + e.getMessage());
+                }
             }
         });
     }
@@ -304,20 +406,54 @@ public class DatabaseManager {
             String tableName = databaseType.equalsIgnoreCase("mysql") ? 
                 plugin.getConfigManager().getMySQLTable() : "joinmessages";
                 
-            String query = "INSERT OR REPLACE INTO " + tableName + " (uuid, username, quit_suffix) VALUES (?, ?, ?)";
-            
             if (databaseType.equalsIgnoreCase("mysql")) {
-                query = "INSERT INTO " + tableName + " (uuid, username, quit_suffix) VALUES (?, ?, ?) " +
+                // For MySQL, use ON DUPLICATE KEY UPDATE to preserve other columns
+                String query = "INSERT INTO " + tableName + " (uuid, username, quit_suffix) VALUES (?, ?, ?) " +
                         "ON DUPLICATE KEY UPDATE username = VALUES(username), quit_suffix = VALUES(quit_suffix)";
-            }
-            
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, uuid);
-                statement.setString(2, username);
-                statement.setString(3, suffix);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                plugin.getLogger().severe("Failed to set quit suffix: " + e.getMessage());
+                
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.setString(1, uuid);
+                    statement.setString(2, username);
+                    statement.setString(3, suffix);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit suffix: " + e.getMessage());
+                }
+            } else {
+                // For SQLite, we need to preserve existing data
+                try {
+                    // First check if the record exists
+                    String checkQuery = "SELECT uuid FROM " + tableName + " WHERE uuid = ?";
+                    boolean recordExists = false;
+                    
+                    try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                        checkStatement.setString(1, uuid);
+                        ResultSet resultSet = checkStatement.executeQuery();
+                        recordExists = resultSet.next();
+                    }
+                    
+                    if (recordExists) {
+                        // Update only the quit_suffix column, preserving other columns
+                        String updateQuery = "UPDATE " + tableName + " SET username = ?, quit_suffix = ? WHERE uuid = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                            updateStatement.setString(1, username);
+                            updateStatement.setString(2, suffix);
+                            updateStatement.setString(3, uuid);
+                            updateStatement.executeUpdate();
+                        }
+                    } else {
+                        // Insert a new record
+                        String insertQuery = "INSERT INTO " + tableName + " (uuid, username, quit_suffix) VALUES (?, ?, ?)";
+                        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                            insertStatement.setString(1, uuid);
+                            insertStatement.setString(2, username);
+                            insertStatement.setString(3, suffix);
+                            insertStatement.executeUpdate();
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().severe("Failed to set quit suffix: " + e.getMessage());
+                }
             }
         });
     }

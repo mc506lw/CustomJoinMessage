@@ -41,6 +41,12 @@ public class SetQuitCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        // Handle help command first
+        if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
+            sendHelp(sender);
+            return true;
+        }
+
         // Handle different command scenarios
         if (args.length == 0) {
             // View current quit message
@@ -253,12 +259,6 @@ public class SetQuitCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length >= 2) {
-            if (args[0].equalsIgnoreCase("help")) {
-                // Show help
-                sendHelp(sender);
-                return true;
-            }
-
             // Admin setting another player's message
             if (permissionUtils.isAdmin(sender)) {
                 if (args.length == 2 && args[1].equalsIgnoreCase("reset")) {
@@ -274,7 +274,7 @@ public class SetQuitCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                  // Set another player's message
+                 // Set another player's message
                   Player target = Bukkit.getPlayer(args[0]);
                   if (target == null) {
                       messageManager.sendMessage(sender, "player-not-found", "%player%", args[0]);
@@ -288,7 +288,7 @@ public class SetQuitCommand implements CommandExecutor, TabCompleter {
                   }
 
                   plugin.getDatabaseManager().setQuitMessage(target.getUniqueId().toString(), target.getName(), message.toString());
-                  messageManager.sendMessage(sender, "player-message-set", "%player%", target.getName());
+                  messageManager.sendMessage(sender, "player-quit-message-set", "%player%", target.getName());
                   return true;
             }
         }

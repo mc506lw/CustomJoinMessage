@@ -43,6 +43,27 @@ public class PlaceholderUtil {
     }
     
     /**
+     * Replace placeholders in a message for an offline player
+     * 为离线玩家替换消息中的占位符
+     * 
+     * @param playerName The name of the offline player
+     * @param message The message to replace placeholders in
+     * @return The message with placeholders replaced
+     */
+    public String replacePlaceholders(String playerName, String message) {
+        if (message == null || message.isEmpty()) {
+            return message;
+        }
+        
+        // Only replace basic placeholders for offline players
+        String result = message.replace("%player_name%", playerName);
+        result = result.replace("%display_name%", playerName);
+        
+        // Can't use PlaceholderAPI for offline players
+        return result;
+    }
+    
+    /**
      * Check if PlaceholderAPI is available and enabled
      * 检查PlaceholderAPI是否可用且已启用
      * 
